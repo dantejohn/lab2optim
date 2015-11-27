@@ -18,40 +18,47 @@
 double a = 2, b = -1.3, c = 0.02, d = 0.14;
 double e[5] = {0.1, 0.01, 0.001, 0.0001, 0.00001};
 int N0, N1, N2, N, k, i;
-double x1[1000], x2[1000], y[4];
+double x[3000][2], y[10];
 double z1, z2;
 double A, B;
 
 
 void config (void);
+void gradopt (void);
 
 double
 dz (double x1, double x2) {
+  N0++;
   return a * x1 - b * x2 + exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
 dzdx1 (double x1, double x2) {
+  N1++;
   return a + 2 * c * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
 dzdx2 (double x1, double x2) {
+  N1++;
   return b + 2 * d * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
 dz2dx12 (double x1, double x2) {
+  N2++;
   return (pow(2 * c, 2) * pow(x1, 2) + 2 * c) * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
 dz2dx22 (double x1, double x2) {
+  N2++;
   return (pow(2 * d, 2) * pow(x2, 2) + 2 * d) * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
 dz2dx1x2 (double x1, double x2) {
+  N2++;
   return 4 * c * d * x1 * x2 * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
@@ -59,7 +66,7 @@ int
 main() {
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  config();
+  grdopt();
   }
 }
 
@@ -123,5 +130,13 @@ config () {
     }
   } while(s == 0);
   x1min = x1[k]; x2min = x2[k]; ymin = y[0];
+  N = N0 + N1 + N2;
   printf("%f; %f; %f; %d; %d\n", x1min, x2min, ymin, N, k);
+}
+
+void
+gradopt() {
+  int k, l1, l2;
+  double x[3000][2]; double y[10];
+  x[0][1] = 
 }
