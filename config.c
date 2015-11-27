@@ -15,7 +15,12 @@
 #include <stdlib.h>
 #include <math.h>
 
-double a = 2, b = -1.3, c = 0.02, d = 0.14;
+#define A 2
+#define B -1.3
+#define C 0.02
+#define D 0.14
+
+//double a = 2, b = -1.3, c = 0.02, d = 0.14;
 double e[5] = {0.1, 0.01, 0.001, 0.0001, 0.00001};
 int N0, N1, N2, N, k, i;
 
@@ -27,25 +32,25 @@ void gradopt (void);
 double
 dz (double x1, double x2) {
   N0++;
-  return a * x1 - b * x2 + exp(c * pow(x1, 2) + d * pow(x2, 2));
+  return A * x1 - B * x2 + exp(C * pow(x1, 2) + D * pow(x2, 2));
 }
 
 double
 dzdx1 (double x1, double x2) {
   N1++;
-  return a + 2 * c * exp(c * pow(x1, 2) + d * pow(x2, 2));
+  return A + 2 * C * x1 * exp(C * pow(x1, 2) + D * pow(x2, 2));
 }
 
 double
 dzdx2 (double x1, double x2) {
   N1++;
-  return b + 2 * d * exp(c * pow(x1, 2) + d * pow(x2, 2));
+  return B + 2 * D * x2 * exp(C * pow(x1, 2) + D * pow(x2, 2));
 }
-
+/*
 double
 dz2dx12 (double x1, double x2) {
   N2++;
-  return (pow(2 * c, 2) * pow(x1, 2) + 2 * c) * exp(c * pow(x1, 2) + d * pow(x2, 2));
+  return (pow(2 * C, 2) * pow(x1, 2) + 2 * C) * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 double
@@ -59,10 +64,10 @@ dz2dx1x2 (double x1, double x2) {
   N2++;
   return 4 * c * d * x1 * x2 * exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
-
+*/
 int
 main() {
-  for (i=1; i < 2; i++) {
+  for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
   gradopt();
   }
@@ -135,52 +140,53 @@ config () {
 void
 gradopt() {
   int k, m;
-  double o, q, s, ymin, x1min, x2min, e0, alpha, y1, y2;
+  double a, b, d, ymin, x1min, x2min, alpha, y1, y2;
   double z1, z2, p, alpmin, g1, g2;
-  double x[3000][2]; double y[10];
-  x[0][0] = -1; x[0][1] = 0;
+  double e2 = 0.00025;
+  double x[10000][2]; double y[10];
+  x[0][0] = -5; x[0][1] = 0;
   k = 0; N0 = 0; N1 = 0; N2 = 0; N = 0; alpha = 2.2;
   z1 = dzdx1 (x[0][0], x[0][1]); z2 = dzdx2 (x[0][0], x[0][1]);
 mm1:
   m = 0;
   y1 = dz (x[k][0],x[k][1]);
 metka:
-  y2 = dz (x[k][1]-(m+1)*alpha*z1,x[k][1]-(m+1)*alpha*z2);
+  y2 = dz (x[k][0]-(m+1)*alpha*z1,x[k][1]-(m+1)*alpha*z2);
   if (y2 < y1) {
     m++; y1=y2; goto metka;
   }
   else {
-    q = (m+1)*alpha;
+    b = (m+1)*alpha;
     if (m == 0) {
-      o = 0;
+      a = 0;
     }
     else {
-      o = (m-1)*alpha;
+      a = (m-1)*alpha;
     }
   }
   do {
-    p = (o+q)/2;
-    g1 = dz (x[k][0]-(p-0.0001)*z1,x[k][1]-(p-0.0001)*z2);
-    g2 = dz (x[k][0]-(p+0.0001)*z1,x[k][1]-(p+0.0001)*z2);
+    p = (a+b)/2;
+    g1 = dz (x[k][0]-(p-0.000001)*z1,x[k][1]-(p-0.000001)*z2);
+    g2 = dz (x[k][0]-(p+0.000001)*z1,x[k][1]-(p+0.000001)*z2);
     if (g1 < g2) {
-      q = p + 0.0001;
+      b = p + 0.000001;
     }
     else {
-      o = p - 0.0001;
+      a = p - 0.000001;
     }
-  } while ((q-o)/2>2*e[i]);
-  alpmin = (o+q)/2;
-  printf("\nk=%d", k+1 );
+  } while ((b-a)/2>e[i]);
+  alpmin = (a+b)/2;
   x[k+1][0]=x[k][0]-alpmin*z1; 
   x[k+1][1]=x[k][1]-alpmin*z2; 
   if (i==1) {
-    printf("\nx[0][0]= %lf", x[k+1][0]);
-    printf("\nx[0][1]= %lf", x[k+1][1]);
+    printf("\nk=%d", k+1 );
+    printf("\nx[1][1]= %lf", x[k+1][0]);
+    printf("\nx[1][2]= %lf", x[k+1][1]);
   }
   z1=dzdx1(x[k+1][0],x[k+1][1]);
   z2=dzdx2(x[k+1][0],x[k+1][1]);
-  q = pow (z1*z1+z2*z2, 0.5);
-  if (d > 2.5*e[i]) {
+  d = pow (z1*z1+z2*z2, 0.5);
+  if (d > e2) {
     k++; goto mm1;
   }
   else {
@@ -188,7 +194,7 @@ metka:
     x2min = x[k+1][1];
     ymin = dz (x1min, x2min);
     N = N0 + N1 -1;
-    printf ("\n%f; %f; %f; %d; %d; %d; k = %d;\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
+    printf ("\n%lf; %lf; %lf; %d; %d; %d; k = %d;\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
   }
 
 }
