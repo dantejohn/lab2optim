@@ -5,7 +5,7 @@
 ####      LabWork 2 Optimization Methods      ####
 ####        Student: Eugene Dementyev         ####
 ####          Group: BZI-104m                 ####
-####   NEWTON with optimalniy of shag         ####
+####               NEWTON                     ####
 ####                                          ####
 ##################################################
 ##################################################
@@ -75,9 +75,9 @@ fi(int ki,double dalf,double x1,double x2,double z)
 }
 
 void
-newtonopt() 
+newton() 
 {
-  double x[1000][2];
+  double x[1500][2];
   double y[2][2];
   k=0; N1 = 0; N2 = 0; N0 = 0; N = 0;
   int l,j;
@@ -95,55 +95,25 @@ newtonopt()
     y[0][1] = dfx1x2 (x[k][0], x[k][1]);
     y[1][0] = y[0][1];
     y[1][1] = dfx2x2 (x[k][0], x[k][1]);
+
     det = y[0][0] * y[1][1] - y[0][1] * y[1][0];
     p1 = (y1 * y[1][1] - y2 * y[0][1]) / det;
     p2 = (y[0][0] * y2 - y[1][0] * y1) / det;
-    m = 0;
-    ym1 = df (x[k][0], x[k][1]);
-
-  ab:
-    ym2 = fi (k, dalf * (m + 1), x[k][0], x[k][1], y1);
-    if (ym2 < ym1) {
-      m++;
-      ym1 = ym2;
-      goto ab;
-    }
-    else { 
-      b1 = (m + 1) * dalf;
-      if (m == 0) {
-        a1=0;
-      } 
-      else { 
-        a1 = (m - 1) * dalf;
-      }
-    }
-    ma = a1 + (b1 - a1) / n;
-    min = df (x[k][0] - ma * y1, x[k][1] - ma * y2);
-    l = 1;
-    for (j = 2; j <= n; j++){ 
-      ma = a1 + j * (b1 - a1) / n;
-      kan = df (x[k][0] - ma * y1, x[k][1] - ma * y2);
-      if (min > kan) {
-        min = kan;
-        l = i;
-      }
-    }
-    x[k + 1][0] = x[k][0] - (l * (b1 - a1) / n) * p1;
-    x[k + 1][1] = x[k][1] - (l * (b1 - a1) / n) * p2;
-    if (i==0) {
-      printf("%f; %f\n", x[k+1][0], x[k+1][1]);
-    } 
-    y1 = dfx1 (x[k][0], x[k][1]);
-    y2 = dfx2 (x[k][0], x[k][1]);
+  
+    x[k + 1][0] = x[k][0] - p1;
+    x[k + 1][1] = x[k][1] - p2;
+    if (i==0) printf("%f; %f\n", x[k+1][0], x[k+1][1]);
+    y1 = dfx1 (x[k+1][0], x[k+1][1]);
+    y2 = dfx2 (x[k+1][0], x[k+1][1]);
     del = pow (y1 * y1 + y2 * y2, 0.5);
     k++;
     if (del > e[i]) {
       goto p1;
     }
     else {
-      N = N0-1+N1+N2;
+      N=N0-1+N1+N2;
       printf ("x1 = %lf\n x2 = %lf\n y = %lf\n N0 = %d\n N1 = %d\n N2 = %d\n N = %d\n k = %d\n",
-              x[k][0], x[k][1], df(x[k][0], x[k][1]), N0-1, N1, N2, N, k);
+              x[k][0], x[k][1], df(x[k][0], x[k][1]), N0-1, N1, N2, N-1, k);
     }
 }
 
@@ -151,7 +121,7 @@ int
 main() {
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  newtonopt();
+  newton();
 }
 return 0;
 }
