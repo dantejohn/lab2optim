@@ -29,37 +29,7 @@ void gradopt (void);
 double
 dz (double x1, double x2) {
   N0++;
-  return a * x1 - b * x2 + exp(c * pow(x1, 2) + d * pow(x2, 2));
-}
-
-double
-dzdx1 (double x1, double x2) {
-  N1++;
-  return a + 2 * c * exp(c * pow(x1, 2) + d * pow(x2, 2));
-}
-
-double
-dzdx2 (double x1, double x2) {
-  N1++;
-  return b + 2 * d * exp(c * pow(x1, 2) + d * pow(x2, 2));
-}
-
-double
-dz2dx12 (double x1, double x2) {
-  N2++;
-  return (pow(2 * c, 2) * pow(x1, 2) + 2 * c) * exp(c * pow(x1, 2) + d * pow(x2, 2));
-}
-
-double
-dz2dx22 (double x1, double x2) {
-  N2++;
-  return (pow(2 * d, 2) * pow(x2, 2) + 2 * d) * exp(c * pow(x1, 2) + d * pow(x2, 2));
-}
-
-double
-dz2dx1x2 (double x1, double x2) {
-  N2++;
-  return 4 * c * d * x1 * x2 * exp(c * pow(x1, 2) + d * pow(x2, 2));
+  return a * x1 + b * x2 + exp(c * pow(x1, 2) + d * pow(x2, 2));
 }
 
 int
@@ -78,9 +48,9 @@ config () {
   double l = 1, h = 1;
   int s = 1;
   k = 0;
-  y[0] = dz(x1[0], x2[0]);
+  y[0] = dz (x1[0], x2[0]);
   do {
-    s=1; y[1]=dz(x1[k]+h,x2[k]);
+    s=1; y[1]=dz (x1[k]+h,x2[k]);
     if(y[0]>y[1]) {
       x1[k + 1]=x1[k]+h;
     }
@@ -132,9 +102,4 @@ config () {
   x1min = x1[k]; x2min = x2[k]; ymin = y[0];
   N = N0 + N1 + N2;
   printf("%f; %f; %f; %d; %d\n", x1min, x2min, ymin, N, k);
-}
-
-void
-gradopt() {
-
 }
