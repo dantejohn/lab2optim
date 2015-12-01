@@ -23,8 +23,7 @@ double z1, z2;
 double A, B;
 
 
-void config (void);
-void gradopt (void);
+void config (FILE *file);
 
 double
 dz (double x1, double x2) {
@@ -34,20 +33,23 @@ dz (double x1, double x2) {
 
 int
 main() {
+  FILE *file = fopen("config.txt", "w+");
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  config();
+  config(file);
   }
+    fclose(file);
 }
 
 void
-config () {
+config (FILE *file) {
   double x1min, x2min, ymin;
   N0 = 0; N1 = 0; N2 = 0; N = 0;
   x1[0] = -1; x2[0] = 0;
   double l = 1, h = 1;
   int s = 1;
   k = 0;
+
   y[0] = dz (x1[0], x2[0]);
   do {
     s=1; y[1]=dz (x1[k]+h,x2[k]);
@@ -79,8 +81,8 @@ config () {
       }
     }
     if (i == 0) {
-      printf("%d: %f; %f\n", k, x1[k], x2[k]);
-      printf("%d: %f; %f\n",k + 1, x1[k + 1], x2[k + 1]);
+      fprintf(file, "%f\t%f\n", x1[k], x2[k]);
+      fprintf(file, "%f\t%f\n", x1[k + 1], x2[k + 1]);
     }
     if((x1[k + 1] == x1[k]) && (x2[k + 1] == x2[k])) {
       if(h > e[i]) {
@@ -101,5 +103,5 @@ config () {
   } while(s == 0);
   x1min = x1[k]; x2min = x2[k]; ymin = y[0];
   N = N0 + N1 + N2;
-  printf("%f; %f; %f; %d; %d\n", x1min, x2min, ymin, N, k);
+  fprintf(file, "%f\t%f\t%f\t%d\t%d\n", x1min, x2min, ymin, N, k);
 }

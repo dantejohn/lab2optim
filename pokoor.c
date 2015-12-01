@@ -44,7 +44,7 @@ dfx2 (double x1, double x2) {
 }
 
 void
-pokoor(){
+pokoor(FILE *file){
   int j,l1,l2,choos,des;
   double a,b,d,ymin,x1min,x2min,alpha=0.03;
   N0=0; N1=0; N2=0; N=0; k=0;
@@ -57,15 +57,15 @@ pokoor(){
   metka:
     x[0][2*k+1] = x[0][2*k] - alpha*dfx1(x[0][2*k],x[1][2*k]);
     x[1][2*k+1]=x[1][2*k];
-    if (i==1) {
-      printf("x[1][1] = %f\nx[2][1] = %f\n", x[0][2*k+1], x[1][2*k+1]);
+    if (i==0) {
+      fprintf(file, "%f\t%f\n", x[0][2*k+1], x[1][2*k+1]);
     }
     x[0][2*k+2] = x[0][2*k+1];
     x[1][2*k+2] = x[1][2*k+1] - alpha*dfx2(x[0][2*k+1], x[1][2*k+1]);
     d = pow ((pow(x[0][2*k+2]-x[0][2*k],2)+pow(x[1][2*k+2]-x[1][2*k],2)), 0.5);
     if (d>e[i]) {
       k++;
-      if (i==1) {
+      if (i==0) {
         printf("k=%d\n", k+1);
       }
       goto metka;
@@ -74,16 +74,19 @@ pokoor(){
       x1min = x[0][2*k+2];
       x2min = x[1][2*k+2];
       ymin = df(x1min, x2min);
-      printf("X1min = %f\nX2min = %f\nYmin = %f\n N0 = %d\n N1 = %d\n N = %d\n k = %d\n", 
+      fprintf(file, "%f\t%f\t%f\t%d\t%d\t%d\t%d\n", 
               x1min, x2min, ymin, N0-1, N1, N0+N1-1, k+1);
     }
 }
 
 int
 main() {
+      FILE *file = fopen("result/pokoor.txt", "w+");
+
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  pokoor();
+  pokoor(file);
 }
+fclose(file);
 return 0;
 }

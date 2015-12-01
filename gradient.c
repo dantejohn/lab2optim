@@ -25,8 +25,7 @@ int N0, N1, N2, N, k, i;
 
 
 
-void config (void);
-void gradopt (void);
+void gradopt (FILE *file);
 
 double
 dz (double x1, double x2) {
@@ -48,16 +47,18 @@ dzdx2 (double x1, double x2) {
 
 int
 main() {
+    FILE *file = fopen("result/gradopt.txt", "w+");
+
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  gradopt();
+  gradopt(file);
   }
-
+    fclose(file);
   return 0;
 }
 
 void
-gradopt() {
+gradopt(FILE *file) {
   int k, m;
   double a, b, d, ymin, x1min, x2min, alpha, y1, y2;
   double z1, z2, p, alpmin, g1, g2;
@@ -98,9 +99,7 @@ metka:
   x[k+1][0]=x[k][0]-alpmin*z1;
   x[k+1][1]=x[k][1]-alpmin*z2;
   if (i==0) {
-    printf("\nk=%d", k+1 );
-    printf("\nx[1][1]= %lf", x[k+1][0]);
-    printf("\nx[1][2]= %lf", x[k+1][1]);
+    fprintf(file, "%lf\t%lf\n", x[k+1][0], x[k+1][1]);
   }
   z1=dzdx1(x[k+1][0],x[k+1][1]);
   z2=dzdx2(x[k+1][0],x[k+1][1]);
@@ -113,7 +112,7 @@ metka:
     x2min = x[k+1][1];
     ymin = dz (x1min, x2min);
     N = N0 + N1 -1;
-    printf ("\n%lf; %lf; %lf; %d; %d; %d; k = %d;\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
+    fprintf (file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
   }
 
 }
