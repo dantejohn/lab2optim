@@ -86,7 +86,7 @@ void newtonopt(FILE *file)
         }
         while(d>e[ii]);
         fprintf(file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
-                  x[1][0], x[1][1], df(x[1][0],x[1][1]), N0-1, N1, N2, N0+N1+N2-1);
+                  x[1][0], x[1][1], df(x[1][0],x[1][1]), N0-1, N1, N2, N0+N1+N2-1, k);
 }
 
 double
