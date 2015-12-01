@@ -75,7 +75,7 @@ fi(int ki,double dalf,double x1,double x2,double z)
 }
 
 void
-newton() 
+newton(FILE *file) 
 {
   double x[1500][2];
   double y[2][2];
@@ -109,7 +109,7 @@ newton()
     }
     x[k + 1][0] = x[k][0] - a*p1;
     x[k + 1][1] = x[k][1] - a*p2;
-    if (i==0) printf("%f; %f\n", x[k+1][0], x[k+1][1]);
+    if (i==0) fprintf(file, "%f\t%f\n", x[k+1][0], x[k+1][1]);
     y1 = dfx1 (x[k+1][0], x[k+1][1]);
     y2 = dfx2 (x[k+1][0], x[k+1][1]);
     del = pow (y1*y1+y2*y2, 0.5);
@@ -119,16 +119,18 @@ newton()
     }
     else {
       N=N0-1+N1+N2;
-      printf ("x1 = %lf\n x2 = %lf\n y = %lf\n N0 = %d\n N1 = %d\n N2 = %d\n N = %d\n k = %d\n",
+      fprintf (file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
               x[k][0], x[k][1], df(x[k][0], x[k][1]), N0-1, N1, N2, N-1, k);
     }
 }
 
 int
 main() {
+    FILE *file = fopen("result/newtonDROB.txt", "w+");
   for (i=0; i < 5; i++) {
   printf("Iteration %d with e = %lf\n", i+1, e[i]);
-  newton();
+  newton(file);
 }
+fclose (file);
 return 0;
 }

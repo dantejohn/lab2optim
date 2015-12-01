@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -7,7 +7,7 @@
 #define C 0.02
 #define D 0.14
 
-using namespace std;
+
 int N = 0, N0 = 0, N1 = 0, N2 = 0, k = 0, ii;
 double e[5] = {0.1, 0.01, 0.001, 0.0001, 0.00001};
 
@@ -19,21 +19,21 @@ double dfx1x2(double x1, double x2);
 double dfx2x2(double x1, double x2);
 double W(double alfa, double x[2][2], double p[2]);
 double DihMet(double a,double b,double E2, double xa[1][2],double p[2]);
-void newtonopt ();
+void newtonopt (FILE *file);
 
 int
 main() {
+    FILE *file = fopen("result/newtonOPT.txt", "w+");
   for (ii=0; ii < 5; ii++) {
   printf("Iteration %d with e = %lf\n", ii+1, e[ii]);
-  newtonopt();
+  newtonopt(file);
 }
+fclose(file);
 return 0;
 }
 
-void newtonopt()
+void newtonopt(FILE *file)
 {
-        FILE* out;
-        out=fopen("www.txt","w+");
         double x[2][2],y[2];
         x[0][0]=1;
         x[0][1]=0;
@@ -75,17 +75,18 @@ void newtonopt()
 
                 x[1][0]=x[0][0]-alfa*p[0];
                 x[1][1]=x[0][1]-alfa*p[1];
-
+                    if (ii==0) {
+      fprintf(file, "%f\t%f\n", x[1][0], x[1][1]);
+    } 
                 f1[0]=dfx1(x[1][0],x[1][1]);
                 f1[1]=dfx2(x[1][0],x[1][1]);
                 x[0][0]=x[1][0];
                 x[0][1]=x[1][1];
-                N1+=2;
                 d=sqrt(pow(f1[0],2)+pow(f1[1],2));
-                cout<<"n= "<<n<<"\n"<<"x1= "<<x[1][0]<<"\n"<<"x2= "<<x[1][1]<<"\n"<<"y= "<<df(x[1][0],x[1][1])<<"\n"<<"N= "<<N0+N1+N2<<"\n\n";
-                fprintf(out,"%lf\t%lf\t\n",x[1][0],x[1][1]);
         }
         while(d>e[ii]);
+        fprintf(file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
+                  x[1][0], x[1][1], df(x[1][0],x[1][1]), N0-1, N1, N2, N0+N1+N2-1);
 }
 
 double
