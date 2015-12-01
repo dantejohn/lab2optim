@@ -109,7 +109,7 @@ newton(FILE *file)
     }
     x[k + 1][0] = x[k][0] - a*p1;
     x[k + 1][1] = x[k][1] - a*p2;
-    if (i==0) fprintf(file, "%f\t%f\n", x[k+1][0], x[k+1][1]);
+    if (i==0) fprintf(stdout, "%f\t%f\n", x[k+1][0], x[k+1][1]);
     y1 = dfx1 (x[k+1][0], x[k+1][1]);
     y2 = dfx2 (x[k+1][0], x[k+1][1]);
     del = pow (y1*y1+y2*y2, 0.5);
@@ -119,7 +119,7 @@ newton(FILE *file)
     }
     else {
       N=N0-1+N1+N2;
-      fprintf (file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
+      fprintf (stdout, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
               x[k][0], x[k][1], df(x[k][0], x[k][1]), N0-1, N1, N2, N-1, k);
     }
 }

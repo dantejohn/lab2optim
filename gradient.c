@@ -99,7 +99,7 @@ metka:
   x[k+1][0]=x[k][0]-alpmin*z1;
   x[k+1][1]=x[k][1]-alpmin*z2;
   if (i==0) {
-    fprintf(file, "%lf\t%lf\n", x[k+1][0], x[k+1][1]);
+    fprintf(stdout, "%lf\t%lf\n", x[k+1][0], x[k+1][1]);
   }
   z1=dzdx1(x[k+1][0],x[k+1][1]);
   z2=dzdx2(x[k+1][0],x[k+1][1]);
@@ -112,7 +112,7 @@ metka:
     x2min = x[k+1][1];
     ymin = dz (x1min, x2min);
     N = N0 + N1 -1;
-    fprintf (file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
+    fprintf (stdout, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\n", x1min, x2min, ymin, N0-1, N1, N, k+1);
   }
 
 }

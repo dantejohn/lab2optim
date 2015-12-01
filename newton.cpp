@@ -76,7 +76,7 @@ void newtonopt(FILE *file)
                 x[1][0]=x[0][0]-alfa*p[0];
                 x[1][1]=x[0][1]-alfa*p[1];
                     if (ii==0) {
-      fprintf(file, "%f\t%f\n", x[1][0], x[1][1]);
+      fprintf(stdout, "%f\t%f\n", x[1][0], x[1][1]);
     } 
                 f1[0]=dfx1(x[1][0],x[1][1]);
                 f1[1]=dfx2(x[1][0],x[1][1]);
@@ -85,7 +85,7 @@ void newtonopt(FILE *file)
                 d=sqrt(pow(f1[0],2)+pow(f1[1],2));
         }
         while(d>e[ii]);
-        fprintf(file, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
+        fprintf(stdout, "%lf\t%lf\t%lf\t%d\t%d\t%d\t%d\t%d\n",
                   x[1][0], x[1][1], df(x[1][0],x[1][1]), N0-1, N1, N2, N0+N1+N2-1, k);
 }
 

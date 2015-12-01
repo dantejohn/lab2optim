@@ -58,7 +58,7 @@ pokoor(FILE *file){
     x[0][2 * k + 1] = x[0][2 * k] - alpha * dfx1 (x[0][2*k], x[1][2*k]);
     x[1][2 * k + 1] = x[1][2 * k];
     if (i == 0) {
-      fprintf(file, "%f\t%f\n", x[0][2 * k + 1], x[1][2 * k + 1]);
+      fprintf(stdout, "%f\t%f\n", x[0][2 * k + 1], x[1][2 * k + 1]);
     }
     x[0][2 * k + 2] = x[0][2 * k + 1];
     x[1][2 * k + 2] = x[1][2 * k + 1] - alpha * dfx2 (x[0][2 * k + 1], x[1][2 * k + 1]);
@@ -75,7 +75,7 @@ pokoor(FILE *file){
       x1min = x[0][2*k+2];
       x2min = x[1][2*k+2];
       ymin = df(x1min, x2min);
-      fprintf(file, "%f\t%f\t%f\t%d\t%d\t%d\t%d\n", 
+      fprintf(stdout, "%f\t%f\t%f\t%d\t%d\t%d\t%d\n", 
               x1min, x2min, ymin, N0-1, N1, N0+N1-1, k+1);
     }
 }

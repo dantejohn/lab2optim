@@ -81,8 +81,8 @@ config (FILE *file) {
       }
     }
     if (i == 0) {
-      fprintf(file, "%f\t%f\n", x1[k], x2[k]);
-      fprintf(file, "%f\t%f\n", x1[k + 1], x2[k + 1]);
+      fprintf(stdout, "%f\t%f\n", x1[k], x2[k]);
+      fprintf(stdout, "%f\t%f\n", x1[k + 1], x2[k + 1]);
     }
     if((x1[k + 1] == x1[k]) && (x2[k + 1] == x2[k])) {
       if(h > e[i]) {
@@ -103,5 +103,5 @@ config (FILE *file) {
   } while(s == 0);
   x1min = x1[k]; x2min = x2[k]; ymin = y[0];
   N = N0 + N1 + N2;
-  fprintf(file, "%f\t%f\t%f\t%d\t%d\n", x1min, x2min, ymin, N, k);
+  fprintf(stdout, "%f\t%f\t%f\t%d\t%d\n", x1min, x2min, ymin, N, k);
 }

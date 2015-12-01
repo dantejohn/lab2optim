@@ -38,7 +38,7 @@ simplex(FILE *file) {
   x[0][1] = x[0][0] + r; x[1][1] = x[1][0];
   x[0][2]= x[0][0]; x[1][2] = x[1][0] + r;
   if (i==0) {
-    fprintf (file, "%f\t%f\n%f\t%f\n", x[0][1], x[1][1], x[0][2], x[1][2]);
+    fprintf (stdout, "%f\t%f\n%f\t%f\n", x[0][1], x[1][1], x[0][2], x[1][2]);
   }
   double y[4];
   y[0]=df(x[0][0],x[1][0]);
@@ -75,7 +75,7 @@ simplex(FILE *file) {
         x[1][l2]=u2;
         y[l2]=y[3];
         if (i==0) {
-          fprintf(file, "%f\t%f\n", x[0][l2], x[1][l2]);
+          fprintf(stdout, "%f\t%f\n", x[0][l2], x[1][l2]);
         }
       }
       else  { 
@@ -85,7 +85,7 @@ simplex(FILE *file) {
             x[1][j]=(x[1][j]+x[1][l1])/2;
             y[j]=df (x[0][j],x[1][j]);
             if (i==0) {
-              fprintf(file, "%f\t%f\n", x[0][j], x[1][j]);
+              fprintf(stdout, "%f\t%f\n", x[0][j], x[1][j]);
             }
           }
         }
@@ -99,7 +99,7 @@ simplex(FILE *file) {
       x1min = x[0][l1];
       x2min = x[0][l1];
       ymin = y[l1];
-      fprintf(file, "%f\t%f\t%f\t%d\t%d\n", 
+      fprintf(stdout, "%f\t%f\t%f\t%d\t%d\n", 
              x1min, x2min, ymin, N0, iter);
     }
 }

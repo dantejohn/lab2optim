@@ -80,7 +80,7 @@ obrazec(FILE *file) {
         y[l+2]=y[0];t=l+2;
       }
       x[0][0]=x[0][l];x[1][0]=x[1][l];y[0]=y[l];
-      if (i==0) fprintf(file, "%f\t%f\n", x[0][0], x[1][0]); 
+      if (i==0) fprintf(stdout, "%f\t%f\n", x[0][0], x[1][0]); 
       k++;
       goto metka;
     }
@@ -94,7 +94,7 @@ obrazec(FILE *file) {
         double x1min, x2min, ymin;
         x1min = x[0][0]; x2min = x[1][0];
         ymin = y[0];
-        fprintf(file, "%f\t%f\t%f\t%d\t%d\n", 
+        fprintf(stdout, "%f\t%f\t%f\t%d\t%d\n", 
                x1min, x2min, ymin, N0, k);
       }
     }
