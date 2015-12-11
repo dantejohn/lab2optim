@@ -52,12 +52,12 @@ config (FILE *file) {
 
   y[0] = dz (x1[0], x2[0]);
   do {
-    s=1; y[1]=dz (x1[k]+h,x2[k]);
-    if(y[0]>y[1]) {
-      x1[k + 1]=x1[k]+h;
+    s = 1; y[1] = dz (x1[k] + h, x2[k]);
+    if(y[0] > y[1]) {
+      x1[k + 1]=x1[k] + h;
     }
     else {
-      y[1] = dz (x1[k] - h,x2[k]);
+      y[1] = dz (x1[k] - h, x2[k]);
       if(y[0] > y[1]) {
         x1[k + 1] = x1[k] - h;
       }
@@ -68,7 +68,7 @@ config (FILE *file) {
     }
     y[2] = dz (x1[k + 1],x2[k] + h);
     if(y[1] > y[2]) {
-      x2[k + 1]=x2[k] + h;
+      x2[k + 1] = x2[k] + h;
     }
     else {
       y[2] = dz (x1[k + 1],x2[k] - h);
@@ -81,8 +81,8 @@ config (FILE *file) {
       }
     }
     if (i == 0) {
-      fprintf(stdout, "%f\t%f\n", x1[k], x2[k]);
-      fprintf(stdout, "%f\t%f\n", x1[k + 1], x2[k + 1]);
+      fprintf (stdout, "%f\t%f\n", x1[k], x2[k]);
+      fprintf (stdout, "%f\t%f\n", x1[k + 1], x2[k + 1]);
     }
     if((x1[k + 1] == x1[k]) && (x2[k + 1] == x2[k])) {
       if(h > e[i]) {
